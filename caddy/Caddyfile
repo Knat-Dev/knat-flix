@@ -1,0 +1,39 @@
+{
+    acme_dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+}
+
+# --- Media Server ---
+plex.{$DOMAIN} {
+    reverse_proxy plex:32400
+}
+
+# --- Management ---
+sonarr.{$DOMAIN} {
+    reverse_proxy sonarr:8989
+}
+
+radarr.{$DOMAIN} {
+    reverse_proxy radarr:7878
+}
+
+prowlarr.{$DOMAIN} {
+    reverse_proxy prowlarr:9696
+}
+
+bazarr.{$DOMAIN} {
+    reverse_proxy bazarr:6767
+}
+
+# --- Downloaders ---
+qbit.{$DOMAIN} {
+    reverse_proxy qbittorrent:8080
+}
+
+audio.{$DOMAIN} {
+    reverse_proxy audiobookshelf:80
+}
+
+# --- Monitoring ---
+status.{$DOMAIN} {
+    reverse_proxy uptime-kuma:3001
+}

@@ -1,0 +1,142 @@
+services:
+  # --- MEDIA SERVER ---
+  plex:
+    image: lscr.io/linuxserver/plex:latest
+    container_name: plex
+    network_mode: host
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - VERSION=docker
+    volumes:
+      - ${CONFIG_ROOT}/plex/config:/config
+      - ${HOST_MEDIA_PATH}:${HOST_MEDIA_PATH}
+    restart: unless-stopped
+
+  # --- REVERSE PROXY ---
+  caddy:
+    build:
+      context: ./caddy
+      dockerfile: Dockerfile
+    container_name: caddy
+    environment:
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+      - DOMAIN=${DOMAIN}  # <--- This was missing!
+    ports:
+      - 80:80
+      - 443:443
+      - 443:443/udp
+    volumes:
+      - ${CONFIG_ROOT}/caddy/config:/config
+      - ${CONFIG_ROOT}/caddy/data:/data
+      - ${CONFIG_ROOT}/caddy/Caddyfile:/etc/caddy/Caddyfile
+    restart: unless-stopped
+
+  # --- INDEXER MANAGER ---
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_ROOT}/prowlarr/config:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+
+  # --- TV & ANIME ---
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_ROOT}/sonarr/config:/config
+      - ${HOST_MEDIA_PATH}:${HOST_MEDIA_PATH}
+    ports:
+      - 8989:8989
+    depends_on:
+      - prowlarr
+    restart: unless-stopped
+
+  # --- MOVIES ---
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_ROOT}/radarr/config:/config
+      - ${HOST_MEDIA_PATH}:${HOST_MEDIA_PATH}
+    ports:
+      - 7878:7878
+    depends_on:
+      - prowlarr
+    restart: unless-stopped
+
+  # --- SUBTITLES ---
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_ROOT}/bazarr/config:/config
+      - ${HOST_MEDIA_PATH}:${HOST_MEDIA_PATH}
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+
+  # --- AUDIOBOOKS ---
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    container_name: audiobookshelf
+    environment:
+      - AUDIOBOOKSHELF_UID=${PUID}
+      - AUDIOBOOKSHELF_GID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_ROOT}/audiobookshelf/config:/config
+      - ${CONFIG_ROOT}/audiobookshelf/metadata:/metadata
+      - ${HOST_MEDIA_PATH}/Audiobooks:/audiobooks
+    ports:
+      - 13378:80
+    restart: unless-stopped
+
+  # --- DOWNLOADER ---
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=8080
+    volumes:
+      - ${CONFIG_ROOT}/qbittorrent/config:/config
+      - ${HOST_MEDIA_PATH}:${HOST_MEDIA_PATH}
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+    restart: unless-stopped
+
+  # --- MONITORING ---
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    volumes:
+      - ${CONFIG_ROOT}/uptime-kuma/data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 3001:3001
+    restart: unless-stopped
