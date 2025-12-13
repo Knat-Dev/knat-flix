@@ -38,6 +38,15 @@ requests.{$DOMAIN} {
     reverse_proxy overseerr:5055
 }
 
+# --- Stats & Dashboard ---
+tautulli.{$DOMAIN} {
+    reverse_proxy tautulli:8181
+}
+
+home.{$DOMAIN} {
+    reverse_proxy homepage:3000
+}
+
 # --- Monitoring ---
 status.{$DOMAIN} {
     reverse_proxy uptime-kuma:3001

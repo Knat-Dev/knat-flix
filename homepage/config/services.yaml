@@ -1,0 +1,63 @@
+---
+- Media:
+    - Plex:
+        icon: plex.png
+        href: https://plex.knat.dev
+        description: Media Server
+
+    - Overseerr:
+        icon: overseerr.png
+        href: https://requests.knat.dev
+        description: Request Movies & TV
+
+    - Tautulli:
+        icon: tautulli.png
+        href: https://tautulli.knat.dev
+        description: Plex Statistics
+
+    - Audiobookshelf:
+        icon: audiobookshelf.png
+        href: https://audio.knat.dev
+        description: Audiobooks & Podcasts
+
+- Downloads:
+    - qBittorrent:
+        icon: qbittorrent.png
+        href: https://qbit.knat.dev
+        description: Torrent Client
+
+    - Sonarr:
+        icon: sonarr.png
+        href: https://sonarr.knat.dev
+        description: TV Shows
+
+    - Radarr:
+        icon: radarr.png
+        href: https://radarr.knat.dev
+        description: Movies
+
+    - Prowlarr:
+        icon: prowlarr.png
+        href: https://prowlarr.knat.dev
+        description: Indexer Manager
+
+    - Bazarr:
+        icon: bazarr.png
+        href: https://bazarr.knat.dev
+        description: Subtitles
+
+- Monitoring:
+    - Grafana:
+        icon: grafana.png
+        href: http://localhost:3000
+        description: Dashboards & Metrics
+
+    - Uptime Kuma:
+        icon: uptime-kuma.png
+        href: https://status.knat.dev/status/v1
+        description: Service Monitoring
+
+    - Prometheus:
+        icon: prometheus.png
+        href: http://localhost:9090
+        description: Metrics Database

@@ -25,13 +25,20 @@ media/
 audiobookshelf/config/
 bazarr/config/
 caddy/config/
+caddy/data/
 overseerr/config/
 plex/config/
 prowlarr/config/
 qbittorrent/config/
 radarr/config/
 sonarr/config/
+tautulli/config/
 uptime-kuma/data/
+
+# --- Homepage (track config, ignore logs) ---
+homepage/config/logs/
+homepage/config/custom.css
+homepage/config/custom.js
 
 # --- Keep monitoring configs (version controlled) ---
 # !monitoring/ is tracked
