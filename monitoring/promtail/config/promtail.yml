@@ -1,0 +1,51 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  # All Docker container logs via Docker SD (handles container name mapping)
+  - job_name: docker
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 5s
+        filters:
+          - name: status
+            values: ["running"]
+    relabel_configs:
+      - source_labels: ['__meta_docker_container_name']
+        regex: '/(.*)'
+        target_label: 'container'
+      - source_labels: ['__meta_docker_container_log_stream']
+        target_label: 'stream'
+      - source_labels: ['__meta_docker_container_label_com_docker_compose_service']
+        target_label: 'service'
+      - action: replace
+        target_label: 'job'
+        replacement: 'docker'
+
+  # Plex internal logs (since Plex logs to files, not stdout)
+  - job_name: plex
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: plex
+          container: plex
+          __path__: /plex-logs/Plex Media Server.log
+
+    pipeline_stages:
+      - multiline:
+          firstline: '^\w{3} \d{1,2}, \d{4}'
+          max_wait_time: 3s
+      - regex:
+          expression: '^(?P<timestamp>\w{3} \d{1,2}, \d{4} \d{2}:\d{2}:\d{2}\.\d+) \[(?P<thread>\d+)\] (?P<level>\w+) - (?P<message>.*)$'
+      - labels:
+          level:
+      - output:
+          source: message

@@ -2,8 +2,7 @@
 .env
 
 # --- Application Configs & Databases ---
-# Ignore the "brain" of every app (DBs, settings, thumbnails)
-**/config/
+# Ignore runtime data from apps (DBs, settings, thumbnails)
 **/data/
 **/metadata/
 
@@ -18,7 +17,20 @@ Thumbs.db
 .vscode/
 
 # --- Explicitly Ignore Media Mounts ---
-# (Just in case you ever map a local folder here by accident)
 mnt/
 media/
-docker-compose.yml
+
+# --- App runtime configs (not version controlled) ---
+# These contain secrets, API keys, and local paths
+audiobookshelf/config/
+bazarr/config/
+caddy/config/
+plex/config/
+prowlarr/config/
+qbittorrent/config/
+radarr/config/
+sonarr/config/
+uptime-kuma/data/
+
+# --- Keep monitoring configs (version controlled) ---
+# !monitoring/ is tracked
