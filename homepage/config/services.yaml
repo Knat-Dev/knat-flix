@@ -49,15 +49,20 @@
 - Monitoring:
     - Grafana:
         icon: grafana.png
-        href: http://localhost:3000
+        href: https://grafana.knat.dev
         description: Dashboards & Metrics
 
     - Uptime Kuma:
         icon: uptime-kuma.png
-        href: https://status.knat.dev/status/v1
+        href: https://status.knat.dev
         description: Service Monitoring
 
     - Prometheus:
         icon: prometheus.png
-        href: http://localhost:9090
+        href: https://prometheus.knat.dev
         description: Metrics Database
+
+    - Loki:
+        icon: loki.png
+        href: https://loki.knat.dev
+        description: Log Aggregation

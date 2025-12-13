@@ -51,3 +51,15 @@ home.{$DOMAIN} {
 status.{$DOMAIN} {
     reverse_proxy uptime-kuma:3001
 }
+
+grafana.{$DOMAIN} {
+    reverse_proxy grafana:3000
+}
+
+prometheus.{$DOMAIN} {
+    reverse_proxy host.docker.internal:9090
+}
+
+loki.{$DOMAIN} {
+    reverse_proxy loki:3100
+}
