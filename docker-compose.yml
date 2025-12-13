@@ -20,9 +20,11 @@ services:
       context: ./caddy
       dockerfile: Dockerfile
     container_name: caddy
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
       - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
-      - DOMAIN=${DOMAIN} # <--- This was missing!
+      - DOMAIN=${DOMAIN}
     ports:
       - 80:80
       - 443:443
