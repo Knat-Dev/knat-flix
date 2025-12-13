@@ -17,6 +17,8 @@ A complete, self-hosted media automation stack powered by Docker Compose. Automa
 | **Audiobookshelf** | Audiobook & podcast server         | `13378`                |
 | **Caddy**          | Reverse proxy with automatic HTTPS | `80`, `443`            |
 | **Uptime Kuma**    | Service monitoring dashboard       | `3001`                 |
+| **Watchtower**     | Automatic container updates        | `8088`                 |
+| **arr-bot**        | Discord bot for stack control      | -                      |
 
 ---
 
@@ -48,6 +50,17 @@ HOST_MEDIA_PATH=/path/to/your/media
 # Caddy/Cloudflare (optional, for reverse proxy)
 DOMAIN=example.com
 CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
+
+# Discord Bot (optional)
+DISCORD_BOT_TOKEN=your_discord_bot_token
+DISCORD_CLIENT_ID=your_discord_client_id
+
+# Watchtower
+WATCHTOWER_API_TOKEN=your_secure_random_token
+
+# Discord Webhook (for Watchtower notifications)
+DISCORD_WEBHOOK_ID=your_webhook_id
+DISCORD_WEBHOOK_TOKEN=your_webhook_token
 ```
 
 ### 3. Launch the Stack
@@ -93,6 +106,56 @@ For instant moves and space efficiency, ensure all services share the same `HOST
 id $(whoami)
 # uid=1000(user) gid=1000(user) ...
 ```
+
+---
+
+## 🤖 Discord Bot Setup
+
+The stack includes a Discord bot for managing container updates from your phone.
+
+### How It Works
+
+1. **Watchtower** checks for new container images daily at 4am (monitor-only mode)
+2. When updates are available, a **webhook notification** is sent to your Discord channel
+3. You receive the notification on your phone and can decide when to update
+4. Use `/arr update` to apply the pending updates
+5. Use `/arr status` to check container health
+
+### Setup Steps
+
+1. **Create a Discord Application**
+
+   - Go to [Discord Developer Portal](https://discord.com/developers/applications)
+   - Create a new application
+   - Go to **Bot** → Create bot → Copy the token → Set as `DISCORD_BOT_TOKEN`
+   - Copy the Application ID → Set as `DISCORD_CLIENT_ID`
+
+2. **Create a Discord Webhook**
+
+   - In your Discord server, go to channel settings → Integrations → Webhooks
+   - Create a webhook and copy the URL
+   - Extract the ID and token from the URL: `https://discord.com/api/webhooks/{ID}/{TOKEN}`
+   - Set `DISCORD_WEBHOOK_ID` and `DISCORD_WEBHOOK_TOKEN`
+
+3. **Invite the Bot**
+
+   - Go to OAuth2 → URL Generator
+   - Select scopes: `bot`, `applications.commands`
+   - Select permissions: `Send Messages`, `Embed Links`
+   - Use the generated URL to invite the bot to your server
+
+4. **Generate Watchtower Token**
+   ```bash
+   openssl rand -hex 32
+   ```
+   Set this as `WATCHTOWER_API_TOKEN`
+
+### Commands
+
+| Command       | Description                     |
+| ------------- | ------------------------------- |
+| `/arr status` | Show status of all containers   |
+| `/arr update` | Apply pending container updates |
 
 ---
 

@@ -16,9 +16,7 @@ services:
 
   # --- REVERSE PROXY ---
   caddy:
-    build:
-      context: ./caddy
-      dockerfile: Dockerfile
+    image: slothcroissant/caddy-cloudflaredns:latest
     container_name: caddy
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -257,4 +255,39 @@ services:
     command: -config.file=/etc/promtail/config.yml
     depends_on:
       - loki
+    restart: unless-stopped
+
+  # --- WATCHTOWER (Container Updates) ---
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    environment:
+      - TZ=${TZ}
+      - WATCHTOWER_HTTP_API_TOKEN=${WATCHTOWER_API_TOKEN}
+      - WATCHTOWER_HTTP_API_UPDATE=true
+      - WATCHTOWER_NOTIFICATION_URL=discord://${DISCORD_WEBHOOK_TOKEN}@${DISCORD_WEBHOOK_ID}?splitlines=false
+      - WATCHTOWER_NO_STARTUP_MESSAGE=true
+      - "WATCHTOWER_NOTIFICATION_TEMPLATE={{range .}}{{.Message}}{{end}}"
+      - WATCHTOWER_CLEANUP=true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 8088:8080
+    restart: unless-stopped
+
+  # --- DISCORD BOT ---
+  arr-bot:
+    build: ./arr-bot
+    container_name: arr-bot
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    environment:
+      - DISCORD_TOKEN=${DISCORD_BOT_TOKEN}
+      - DISCORD_CLIENT_ID=${DISCORD_CLIENT_ID}
+      - WATCHTOWER_URL=http://watchtower:8080
+      - WATCHTOWER_TOKEN=${WATCHTOWER_API_TOKEN}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - watchtower
     restart: unless-stopped
