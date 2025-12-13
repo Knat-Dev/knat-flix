@@ -37,8 +37,6 @@ uptime-kuma/data/
 
 # --- Homepage (track config, ignore logs) ---
 homepage/config/logs/
-homepage/config/custom.css
-homepage/config/custom.js
 
 # --- Keep monitoring configs (version controlled) ---
 # !monitoring/ is tracked

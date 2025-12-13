@@ -34,7 +34,7 @@ audio.{$DOMAIN} {
 }
 
 # --- Requests ---
-requests.{$DOMAIN} {
+overseerr.{$DOMAIN} {
     reverse_proxy overseerr:5055
 }
 

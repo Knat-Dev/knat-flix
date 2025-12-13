@@ -1,16 +1,18 @@
 ---
 title: Arr Stack
 background:
-  image: https://images.unsplash.com/photo-1478760329108-5c3ed9d495a0?w=1920
-  blur: sm
-  opacity: 50
+  image: https://images.unsplash.com/photo-1557264337-e8a93017fe92?q=80&w=2070
+  blur: xl
+  saturate: 20
+  brightness: 50
 
 theme: dark
 color: slate
 
 headerStyle: clean
 
-fiveColumns: false
+maxGroupColumns: 3
+useEqualHeights: true
 
 layout:
   Media:
