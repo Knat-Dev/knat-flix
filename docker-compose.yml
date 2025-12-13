@@ -98,6 +98,20 @@ services:
       - 6767:6767
     restart: unless-stopped
 
+  # --- REQUESTS ---
+  overseerr:
+    image: sctx/overseerr:latest
+    container_name: overseerr
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_ROOT}/overseerr/config:/app/config
+    ports:
+      - 5055:5055
+    restart: unless-stopped
+
   # --- AUDIOBOOKS ---
   audiobookshelf:
     image: ghcr.io/advplyr/audiobookshelf:latest

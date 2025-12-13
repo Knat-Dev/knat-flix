@@ -33,6 +33,11 @@ audio.{$DOMAIN} {
     reverse_proxy audiobookshelf:80
 }
 
+# --- Requests ---
+requests.{$DOMAIN} {
+    reverse_proxy overseerr:5055
+}
+
 # --- Monitoring ---
 status.{$DOMAIN} {
     reverse_proxy uptime-kuma:3001

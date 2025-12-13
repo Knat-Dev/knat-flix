@@ -25,6 +25,7 @@ media/
 audiobookshelf/config/
 bazarr/config/
 caddy/config/
+overseerr/config/
 plex/config/
 prowlarr/config/
 qbittorrent/config/
