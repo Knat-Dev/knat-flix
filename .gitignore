@@ -3,13 +3,13 @@
 
 # --- Application Configs & Databases ---
 # Ignore the "brain" of every app (DBs, settings, thumbnails)
-*/config/
-*/data/
-*/metadata/
+**/config/
+**/data/
+**/metadata/
 
 # --- Logs ---
 *.log
-*/logs/
+**/logs/
 
 # --- OS & Misc Junk ---
 .DS_Store
@@ -21,3 +21,4 @@ Thumbs.db
 # (Just in case you ever map a local folder here by accident)
 mnt/
 media/
+docker-compose.yml

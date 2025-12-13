@@ -22,7 +22,7 @@ services:
     container_name: caddy
     environment:
       - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
-      - DOMAIN=${DOMAIN}  # <--- This was missing!
+      - DOMAIN=${DOMAIN} # <--- This was missing!
     ports:
       - 80:80
       - 443:443
@@ -132,11 +132,54 @@ services:
 
   # --- MONITORING ---
   uptime-kuma:
-    image: louislam/uptime-kuma:1
+    image: louislam/uptime-kuma:2.0.2
     container_name: uptime-kuma
     volumes:
       - ${CONFIG_ROOT}/uptime-kuma/data:/app/data
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 3001:3001
+    restart: unless-stopped
+
+  # --- NODE EXPORTER ---
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    network_mode: host
+    pid: host
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - "--path.procfs=/host/proc"
+      - "--path.sysfs=/host/sys"
+      - "--path.rootfs=/rootfs"
+    restart: unless-stopped
+
+  # --- PROMETHEUS ---
+  prometheus:
+    image: prom/prometheus:latest
+    network_mode: host
+    volumes:
+      - ./monitoring/prometheus/config/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/prometheus/data:/prometheus
+    ports:
+      - 9090:9090
+    restart: unless-stopped
+
+  # --- GRAFANA ---
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: grafana
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - ./monitoring/grafana/data:/var/lib/grafana
+    ports:
+      - 3000:3000
     restart: unless-stopped
