@@ -27,6 +27,9 @@ RUN pnpm build
 
 # Build PWA
 WORKDIR /app/apps/pwa
+# Set API URL for build-time environment variable
+ARG PUBLIC_API_URL=http://localhost:3006
+ENV PUBLIC_API_URL=${PUBLIC_API_URL}
 RUN pnpm build
 
 # Production stage with nginx

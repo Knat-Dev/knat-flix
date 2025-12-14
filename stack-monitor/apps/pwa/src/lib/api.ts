@@ -1,5 +1,5 @@
 // Point to your API URL
-const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
+const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3006';
 
 // Type will be inferred from the API at runtime
 // For now, we'll use a simple fetch-based client

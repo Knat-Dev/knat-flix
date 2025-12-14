@@ -13,7 +13,7 @@ class SystemState {
   }
 
   connect() {
-    const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3000';
+    const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3006';
     this.socket = io(API_URL, {
       transports: ['websocket', 'polling'],
     });

@@ -11,7 +11,10 @@ import Docker from 'dockerode';
 
 const app = new Hono();
 
-app.use('/*', cors());
+app.use('/*', cors({
+  origin: ['http://localhost:3005', 'http://localhost:3000'],
+  credentials: true,
+}));
 
 // Routes
 app.route('/api/containers', containers);
