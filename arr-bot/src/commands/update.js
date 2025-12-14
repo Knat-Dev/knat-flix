@@ -17,9 +17,10 @@ export const updateCommand = {
 
     try {
       const response = await fetch(`${WATCHTOWER_URL}/v1/update`, {
-        method: "GET",
+        method: "POST",
         headers: {
           Authorization: `Bearer ${WATCHTOWER_TOKEN}`,
+          "Content-Type": "application/json",
         },
       });
 
