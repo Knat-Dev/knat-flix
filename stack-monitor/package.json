@@ -1,0 +1,23 @@
+{
+  "name": "stack-monitor",
+  "version": "1.0.0",
+  "description": "Arr-Stack Control Plane - Unified management interface for home media server stack",
+  "private": true,
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.14.0",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "better-sqlite3"
+    ]
+  },
+  "devDependencies": {
+    "turbo": "^2.0.0"
+  }
+}

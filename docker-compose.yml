@@ -318,3 +318,39 @@ services:
     depends_on:
       - watchtower
     restart: unless-stopped
+
+  # --- THE BRAIN (Control Plane API) ---
+  stack-api:
+    build:
+      context: ./stack-monitor
+      dockerfile: apps/api/Dockerfile
+    container_name: stack-api
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    environment:
+      - PORT=3000
+      - DATABASE_PATH=/data/stack.db
+      - CONFIG_ROOT=/manage
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./stack-monitor/data:/data
+      - ${CONFIG_ROOT}:/manage:ro
+    ports:
+      - 3006:3000
+    restart: unless-stopped
+
+  # --- THE FACE (Control Plane PWA) ---
+  stack-pwa:
+    build:
+      context: ./stack-monitor
+      dockerfile: apps/pwa/Dockerfile
+    container_name: stack-pwa
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    environment:
+      - PUBLIC_API_URL=http://localhost:3006
+    depends_on:
+      - stack-api
+    ports:
+      - 3005:80
+    restart: unless-stopped
