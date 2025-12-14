@@ -63,3 +63,18 @@ prometheus.{$DOMAIN} {
 loki.{$DOMAIN} {
     reverse_proxy loki:3100
 }
+
+# --- Control Plane ---
+stack.{$DOMAIN} {
+    reverse_proxy host.docker.internal:3005
+}
+
+api.{$DOMAIN} {
+    reverse_proxy host.docker.internal:3006 {
+        # WebSocket support is automatic in Caddy v2
+        # But we need to ensure proper headers are passed
+        transport http {
+            # Enable WebSocket upgrades
+        }
+    }
+}

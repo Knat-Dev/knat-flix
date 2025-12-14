@@ -345,7 +345,7 @@ services:
       context: ./stack-monitor
       dockerfile: apps/pwa/Dockerfile
       args:
-        - PUBLIC_API_URL=http://localhost:3006
+        - PUBLIC_API_URL=https://api.${DOMAIN}
     container_name: stack-pwa
     labels:
       - "com.centurylinklabs.watchtower.enable=true"

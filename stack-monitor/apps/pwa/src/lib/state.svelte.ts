@@ -13,7 +13,24 @@ class SystemState {
   }
 
   connect() {
-    const API_URL = import.meta.env.PUBLIC_API_URL || 'http://localhost:3006';
+    // Detect API URL from current hostname or use env var
+    let API_URL: string;
+    if (import.meta.env.PUBLIC_API_URL) {
+      API_URL = import.meta.env.PUBLIC_API_URL;
+    } else if (typeof window !== 'undefined') {
+      const hostname = window.location.hostname;
+      // If we're on stack.domain, use api.domain
+      if (hostname.startsWith('stack.')) {
+        API_URL = `https://api.${hostname.substring(6)}`;
+      } else if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        API_URL = 'http://localhost:3006';
+      } else {
+        API_URL = 'http://localhost:3006';
+      }
+    } else {
+      API_URL = 'http://localhost:3006';
+    }
+    
     this.socket = io(API_URL, {
       transports: ['websocket', 'polling'],
     });

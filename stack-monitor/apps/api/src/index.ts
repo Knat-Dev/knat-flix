@@ -12,7 +12,17 @@ import Docker from 'dockerode';
 const app = new Hono();
 
 app.use('/*', cors({
-  origin: ['http://localhost:3005', 'http://localhost:3000'],
+  origin: (origin, c) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return '*';
+    // Allow localhost for development
+    if (origin.includes('localhost')) return origin;
+    // Allow the stack domain (PWA)
+    if (origin.includes('stack.')) return origin;
+    // Allow the API domain itself
+    if (origin.includes('api.')) return origin;
+    return null;
+  },
   credentials: true,
 }));
 
@@ -80,8 +90,19 @@ const server = createServer(async (req, res) => {
 // Initialize Socket.io
 const io = new Server(server, {
   cors: {
-    origin: '*',
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      // Allow localhost for development
+      if (origin.includes('localhost')) return callback(null, true);
+      // Allow the stack domain (PWA)
+      if (origin.includes('stack.')) return callback(null, true);
+      // Allow the API domain itself
+      if (origin.includes('api.')) return callback(null, true);
+      callback(new Error('Not allowed by CORS'));
+    },
     methods: ['GET', 'POST'],
+    credentials: true,
   },
 });
 
