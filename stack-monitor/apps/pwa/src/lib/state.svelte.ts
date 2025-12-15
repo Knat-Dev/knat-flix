@@ -6,6 +6,7 @@ class SystemState {
   backups = $state<BackupJob[]>([]);
   connection = $state<'connected' | 'disconnecting' | 'disconnected'>('disconnected');
   stats = $state<Record<string, { cpu: number; memory: number }>>({});
+  hasInitialData = $state(false); // Track if we received initial container data
   socket: Socket | null = null;
 
   constructor() {
@@ -47,6 +48,9 @@ class SystemState {
 
     this.socket.on('containers:sync', (data: ContainerInfo[]) => {
       this.containers = data;
+      if (!this.hasInitialData && data.length > 0) {
+        this.hasInitialData = true;
+      }
     });
 
     this.socket.on('stats:tick', (data: Record<string, { cpu: number; memory: number }>) => {

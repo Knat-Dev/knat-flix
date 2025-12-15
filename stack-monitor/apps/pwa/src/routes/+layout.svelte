@@ -1,6 +1,7 @@
 <script lang="ts">
-  // Root layout - can be used for global styles or providers
+  import Toast from '$lib/components/Toast.svelte';
 </script>
 
 <slot />
+<Toast />
 

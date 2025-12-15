@@ -19,7 +19,7 @@ COPY packages/shared ./packages/shared
 COPY apps/pwa ./apps/pwa
 
 # Install dependencies
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 # Build shared package first
 WORKDIR /app/packages/shared

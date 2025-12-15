@@ -21,7 +21,8 @@
   },
   "dependencies": {
     "@arr/shared": "workspace:*",
-    "socket.io-client": "^4.7.5"
+    "socket.io-client": "^4.7.5",
+    "lucide-svelte": "^0.468.0"
   },
   "type": "module"
 }
