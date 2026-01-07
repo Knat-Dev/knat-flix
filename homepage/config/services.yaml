@@ -66,3 +66,29 @@
         icon: loki.png
         href: https://loki.knat.dev
         description: Log Aggregation
+
+    - Dozzle:
+        icon: dozzle.png
+        href: https://logs.knat.dev
+        description: Docker Logs Viewer
+
+- Tools:
+    - FileBrowser:
+        icon: filebrowser.png
+        href: https://files.knat.dev
+        description: File Manager
+
+    - Pingvin Share:
+        icon: pingvin-share.png
+        href: https://drop.knat.dev
+        description: File Sharing
+
+    - ntfy:
+        icon: ntfy.png
+        href: https://notify.knat.dev
+        description: Notifications
+
+    - Stack Monitor:
+        icon: si-docker
+        href: https://stack.knat.dev
+        description: Control Plane

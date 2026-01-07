@@ -78,3 +78,23 @@ api.{$DOMAIN} {
         }
     }
 }
+
+# --- File Manager ---
+files.{$DOMAIN} {
+    reverse_proxy filebrowser:80
+}
+
+# --- Docker Logs ---
+logs.{$DOMAIN} {
+    reverse_proxy dozzle:8080
+}
+
+# --- File Sharing ---
+drop.{$DOMAIN} {
+    reverse_proxy pingvin:3000
+}
+
+# --- Notifications ---
+notify.{$DOMAIN} {
+    reverse_proxy ntfy:80
+}

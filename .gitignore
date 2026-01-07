@@ -40,3 +40,6 @@ homepage/config/logs/
 
 # --- Keep monitoring configs (version controlled) ---
 # !monitoring/ is tracked
+db.*
+*.db
+*.pem
