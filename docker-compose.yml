@@ -419,6 +419,26 @@ services:
       - 3007:80
     restart: unless-stopped
 
+  # --- SLIDES WEBHOOK (auto-deploy on push) ---
+  slides-webhook:
+    build: ./slides-webhook
+    container_name: slides-webhook
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+      - "diun.enable=false"
+    environment:
+      - PORT=9000
+      - WEBHOOK_SECRET=${SLIDES_WEBHOOK_SECRET}
+      - REPO_FILTER=talks
+      - REPO_URL=${SLIDES_REPO_URL:-https://github.com/Knat-Dev/talks.git}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - .:/arr-stack
+      - ./slides/build:/slides-build
+    ports:
+      - 9000:9000
+    restart: unless-stopped
+
   # --- CLOUDFLARE TUNNEL (for slides CDN) ---
   cloudflared:
     image: cloudflare/cloudflared:latest

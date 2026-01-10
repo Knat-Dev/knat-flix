@@ -102,3 +102,8 @@ notify.{$DOMAIN} {
 # --- Slides / Presentations ---
 # Served via Cloudflare Tunnel, not Caddy
 # slides.{$DOMAIN} → cloudflared → slides:80
+
+# --- Slides Webhook (GitHub auto-deploy) ---
+webhook.{$DOMAIN} {
+    reverse_proxy slides-webhook:9000
+}
