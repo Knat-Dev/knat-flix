@@ -1,6 +1,6 @@
 import Dockerode from 'dockerode';
 
-const docker = new Dockerode({ socketPath: '/var/run/docker.sock' });
+const docker = new Dockerode({ socketPath: '/var/run/docker.sock', version: 'v1.44' });
 
 /**
  * Get list of all containers with their status

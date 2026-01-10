@@ -288,6 +288,7 @@ services:
       - "diun.enable=false"
     environment:
       - TZ=${TZ}
+      - DOCKER_API_VERSION=1.44
       - WATCHTOWER_HTTP_API_TOKEN=${WATCHTOWER_API_TOKEN}
       - WATCHTOWER_HTTP_API_UPDATE=true
       - WATCHTOWER_HTTP_API_PERIODIC_POLLS=true
@@ -403,4 +404,30 @@ services:
       - ${CONFIG_ROOT}/ntfy/etc:/etc/ntfy
     ports:
       - 8086:80
+    restart: unless-stopped
+
+  # --- SLIDES / PRESENTATIONS ---
+  slides:
+    build:
+      context: ./slides/build
+      dockerfile: ../Dockerfile
+    container_name: slides
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+      - "diun.enable=false"
+    ports:
+      - 3007:80
+    restart: unless-stopped
+
+  # --- CLOUDFLARE TUNNEL (for slides CDN) ---
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    labels:
+      - "diun.enable=false"
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    depends_on:
+      - slides
     restart: unless-stopped

@@ -92,3 +92,8 @@
         icon: si-docker
         href: https://stack.knat.dev
         description: Control Plane
+
+    - Slides:
+        icon: si-slides
+        href: https://slides.knat.dev
+        description: Presentations

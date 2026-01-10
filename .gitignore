@@ -27,6 +27,8 @@ bazarr/config/
 caddy/config/
 caddy/data/
 overseerr/config/
+pingvin/data/
+pingvin/images/
 plex/config/
 prowlarr/config/
 qbittorrent/config/
@@ -43,3 +45,6 @@ homepage/config/logs/
 db.*
 *.db
 *.pem
+
+# --- Slides build directory (synced from talks repo) ---
+slides/build/
