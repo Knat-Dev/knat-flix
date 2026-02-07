@@ -65,4 +65,22 @@ else
     exit 1
 fi
 
+# Purge Cloudflare CDN cache
+if [[ -n "${CLOUDFLARE_API_TOKEN:-}" ]] && [[ -n "${CLOUDFLARE_ZONE_ID:-}" ]]; then
+    log "Purging Cloudflare CDN cache for slides.knat.dev..."
+    PURGE_RESPONSE=$(curl -s -X POST \
+        "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/purge_cache" \
+        -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+        -H "Content-Type: application/json" \
+        --data '{"hosts":["slides.knat.dev"]}')
+
+    if echo "${PURGE_RESPONSE}" | grep -q '"success":true'; then
+        log "CDN cache purged successfully"
+    else
+        log "Warning: CDN purge may have failed: ${PURGE_RESPONSE}"
+    fi
+else
+    log "Skipping CDN purge (CLOUDFLARE_API_TOKEN or CLOUDFLARE_ZONE_ID not set)"
+fi
+
 log "Deploy complete!"

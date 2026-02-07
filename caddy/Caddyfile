@@ -107,3 +107,13 @@ notify.{$DOMAIN} {
 webhook.{$DOMAIN} {
     reverse_proxy slides-webhook:9000
 }
+
+# --- WoW Dashboard (AzerothCore) ---
+wow.infinitebyte.net {
+    handle /api/* {
+        reverse_proxy host.docker.internal:7781
+    }
+    handle {
+        reverse_proxy host.docker.internal:7780
+    }
+}

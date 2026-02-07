@@ -431,6 +431,8 @@ services:
       - WEBHOOK_SECRET=${SLIDES_WEBHOOK_SECRET}
       - REPO_FILTER=talks
       - REPO_URL=${SLIDES_REPO_URL:-https://github.com/Knat-Dev/talks.git}
+      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
+      - CLOUDFLARE_ZONE_ID=${CLOUDFLARE_ZONE_ID}
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - .:/arr-stack
